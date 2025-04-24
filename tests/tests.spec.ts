@@ -16,7 +16,7 @@ await expect(await page.getByTestId("nav-menu")).toContainText(process.env.USER_
 
 test('ProductInfo', async ({ page }) => {
     await page.goto('')
-    await page.getByTestId("product-01JSKKVAQ8XC1DG7J95JHYGJRG").click();
+    await page.getByTestId("product-01JSM50PVH983VHEGPWSHC31F0").click();
     await expect(page.url()).toContain('/product')
     await expect(await page.getByTestId("product-name")).toHaveText('Combination Pliers')
     await expect(await page.getByTestId('unit-price')).toHaveText('14.15')
@@ -28,7 +28,7 @@ test('ProductInfo', async ({ page }) => {
 
 test('AddToCart', async ({ page }) => {
     await page.goto('')
-    await page.getByTestId("product-01JSKKVAQF69DQ0N78ZCNM1H4J").click();
+    await page.getByTestId("product-01JSM50PVRYCV4KYD8Q1GWXRN3").click();
     await expect(page.url()).toContain('/product')
     await expect(await page.getByTestId("product-name")).toHaveText('Slip Joint Pliers')
     await expect(await page.getByTestId("unit-price")).toHaveText('9.17')
