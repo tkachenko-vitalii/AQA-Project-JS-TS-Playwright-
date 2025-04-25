@@ -1,4 +1,3 @@
-# final-project
 Final project for JS Playwright course(YAJSC) 
 
 Requirements:
