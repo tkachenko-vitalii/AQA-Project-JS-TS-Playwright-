@@ -1,46 +1,66 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/login.page';
 import dotenv from 'dotenv';
+import { ProductPage } from '../pages/product.page';
+import { HomePage } from '../pages/home.page';
+import { Header } from '../pageFragments/header.ts';
 dotenv.config();
 
 
 test('Authorization', async ({ page }) => {
+
+  const loginPage = new LoginPage(page);
+  const header = new Header(page);
+
   await page.goto('/auth/login')
-await page.getByTestId("email").fill(process.env.USER_EMAIL!)
-await page.getByTestId("password").fill(process.env.USER_PASSWORD!)
-await page.getByTestId("login-submit").click()
+
+await loginPage.login(process.env.USER_EMAIL!,process.env.USER_PASSWORD!)
+
 await expect(page).toHaveURL('/account')
 await expect(await page.getByTestId('page-title')).toContainText('My account')
-await expect(await page.getByTestId("nav-menu")).toContainText(process.env.USER_NAME!)
+
+await header.checkAccName(process.env.USER_NAME!)
 });
 
 
 test('ProductInfo', async ({ page }) => {
-    await page.goto('')
-    await page.getByTestId("product-01JSM50PVH983VHEGPWSHC31F0").click();
-    await expect(page.url()).toContain('/product')
-    await expect(await page.getByTestId("product-name")).toHaveText('Combination Pliers')
-    await expect(await page.getByTestId('unit-price')).toHaveText('14.15')
-    await expect(await page.getByTestId('add-to-cart')).toBeVisible()
-    await expect(await page.getByTestId('add-to-favorites')).toBeVisible()
+  const homePage = new HomePage(page, process.env.WEB_URL!) 
+
+  const productPage = new ProductPage(page)
+
+  await homePage.open();
+
+  await productPage.openProduct('Combination Pliers')
+    
+  await productPage.productInfo('Combination Pliers', 14.15)
 })
 
 
 
 test('AddToCart', async ({ page }) => {
-    await page.goto('')
-    await page.getByTestId("product-01JSM50PVRYCV4KYD8Q1GWXRN3").click();
-    await expect(page.url()).toContain('/product')
-    await expect(await page.getByTestId("product-name")).toHaveText('Slip Joint Pliers')
-    await expect(await page.getByTestId("unit-price")).toHaveText('9.17')
-    await page.getByTestId("add-to-cart").click()
-    await expect(await page.locator("[id='toast-container']")).toBeVisible()
-    await expect(await page.locator("[id='toast-container']")).toHaveText('Product added to shopping cart.')
-    await expect(await page.locator("[id='toast-container']")).toBeHidden({ timeout: 8000 })
-    await expect(await page.getByTestId("cart-quantity")).toHaveText('1')
-    await page.getByTestId("nav-cart").click()
-    await expect(page).toHaveURL('/checkout')
-    await expect(await page.getByTestId("product-quantity")).toHaveValue('1')
-    await expect(await page.getByTestId("product-title")).toHaveText('Slip Joint Pliers')
-    await expect(await page.getByTestId("proceed-1")).toBeVisible()
+
+  const homePage = new HomePage(page, process.env.WEB_URL!) 
+  const productPage = new ProductPage(page)
+  const header = new Header(page);
+
+  await homePage.open();
+
+  await productPage.openProduct('Slip Joint Pliers')
+
+  await productPage.productInfo('Slip Joint Pliers', 9.17)
+
+  await page.getByTestId("add-to-cart").click()
+
+  await productPage.cartIcon('Product added to shopping cart.')
+
+  await header.checkQty('1');
+  
+  await header.openCart();
+
+  await expect(page).toHaveURL('/checkout')
+
+  await expect(await page.getByTestId("product-quantity")).toHaveValue('1')
+  await expect(await page.getByTestId("product-title")).toHaveText('Slip Joint Pliers')
+  await expect(await page.getByTestId("proceed-1")).toBeVisible()
 })
 
