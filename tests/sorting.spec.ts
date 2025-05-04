@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../pages/home.page';
+import { ProductPage } from '../pages/product.page.ts';
 import { ProductsFiltersFragment } from '../pageFragments/productsFilters.ts';
 import { PowerTools } from '../tools.ts';
 import dotenv from 'dotenv';
@@ -16,16 +17,14 @@ test.describe('Sorting by name', () => {
       
       test(`Verify sorting by ${label}`, async ({ page }) => {
         
-        const homePage = new HomePage(page, process.env.WEB_URL!)
+        const homePage = new HomePage(page)
         const filters = new ProductsFiltersFragment(page);
         await homePage.open();
 
         await filters.selectSortOption(label);
         const productNames = await homePage.getProductNames();
   
-        const sortedNames = [...productNames].sort((a, b) =>
-          ascending ? a.localeCompare(b) : b.localeCompare(a)
-        );
+        const sortedNames = await homePage.sortNames(productNames,ascending)
   
         expect(productNames).toEqual(sortedNames);
       });
@@ -40,15 +39,16 @@ test.describe('Sorting by name', () => {
     
       for (const { label, ascending } of sortingOptions) {
         test(`Sorting by ${label}`, async ({ page }) => {
-          const homePage = new HomePage(page, process.env.WEB_URL!);
+          const homePage = new HomePage(page);
           const filters = new ProductsFiltersFragment(page);
+        
           await homePage.open();
 
           await filters.selectSortOption(label);
     
           const prices = await homePage.getProductPrices();
-          
-          const sorted = [...prices].sort((a, b) => ascending ? a - b : b - a);
+
+          const sorted = await homePage.sortPrices(prices, ascending);
     
           expect(prices).toEqual(sorted);
         });
@@ -56,7 +56,7 @@ test.describe('Sorting by name', () => {
     });
   
     test('Filter products by category', async ({ page }) => {
-      const homePage = new HomePage(page, process.env.WEB_URL!);
+      const homePage = new HomePage(page);
       const filters = new ProductsFiltersFragment(page);
       await homePage.open();
 

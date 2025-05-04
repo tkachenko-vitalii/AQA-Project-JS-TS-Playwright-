@@ -1,5 +1,4 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { title } from "process";
 
 export class Header {
     page: Page;

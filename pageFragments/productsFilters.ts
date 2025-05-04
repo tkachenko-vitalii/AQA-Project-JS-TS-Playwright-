@@ -1,10 +1,11 @@
-import { expect, Locator, Page } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
+import { Header } from "./header";
 
 export class ProductsFiltersFragment {
   sortDropdown: Locator;
 
   constructor(readonly page: Page) {
-    this.sortDropdown = page.locator('[data-test="sort"]');
+    this.sortDropdown = page.getByTestId('sort');
   }
 
   

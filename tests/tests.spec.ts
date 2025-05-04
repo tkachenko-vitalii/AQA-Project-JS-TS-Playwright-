@@ -24,7 +24,7 @@ await header.checkAccName(process.env.USER_NAME!)
 
 
 test('ProductInfo', async ({ page }) => {
-  const homePage = new HomePage(page, process.env.WEB_URL!) 
+  const homePage = new HomePage(page) 
 
   const productPage = new ProductPage(page)
 
@@ -32,14 +32,14 @@ test('ProductInfo', async ({ page }) => {
 
   await productPage.openProduct('Combination Pliers')
     
-  await productPage.productInfo('Combination Pliers', 14.15)
+  await productPage.checkProductInfo('Combination Pliers', 14.15)
 })
 
 
 
 test('AddToCart', async ({ page }) => {
 
-  const homePage = new HomePage(page, process.env.WEB_URL!) 
+  const homePage = new HomePage(page) 
   const productPage = new ProductPage(page)
   const header = new Header(page);
 
@@ -47,11 +47,11 @@ test('AddToCart', async ({ page }) => {
 
   await productPage.openProduct('Slip Joint Pliers')
 
-  await productPage.productInfo('Slip Joint Pliers', 9.17)
+  await productPage.checkProductInfo('Slip Joint Pliers', 9.17)
 
   await page.getByTestId("add-to-cart").click()
 
-  await productPage.cartIcon('Product added to shopping cart.')
+  await productPage.checkCartIcon('Product added to shopping cart.')
 
   await header.checkQty('1');
   

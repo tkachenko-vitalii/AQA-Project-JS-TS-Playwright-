@@ -1,18 +1,17 @@
-import { expect, Locator, Page } from "@playwright/test";
+import {Locator, Page } from "@playwright/test";
+import { Header } from "../pageFragments/header";
 
 export class HomePage {
     page: Page;
-    baseUrl: string;
     readonly productTitles: Locator;
 
-constructor (page:Page, baseUrl: string) {
+constructor (page:Page,) {
     this.page = page;
-    this.baseUrl = baseUrl
     this.productTitles = page.locator(".product-title");
 }
 
 async open():Promise<void> {
-    await this.page.goto(this.baseUrl)
+    await this.page.goto('')
 }
 
 async getProductNames(): Promise<string[]> {
@@ -26,20 +25,28 @@ async getProductNames(): Promise<string[]> {
     return names;
   }
   async getProductPrices(): Promise<number[]> {
-    const productCards = this.page.locator('[data-test="product-card"]');
+    const productCards = this.page.getByTestId('product-card');
     const count = await productCards.count();
 
     const prices: number[] = [];
     for (let i = 0; i < count; i++) {
       const priceText = await productCards
         .nth(i)
-        .locator('[data-test="product-price"]')
+        .getByTestId('product-price')
         .innerText();
       const price = parseFloat(priceText.replace("$", ""));
       prices.push(price);
     }
 
     return prices;
+  }
+  async sortPrices(prices: number[], ascending: boolean): Promise<number[]> {
+    return [...prices].sort((a, b) => ascending ? a - b : b - a);
+  }
+
+  async sortNames(productNames: string[], ascending: boolean): Promise<string[]> {
+    return [...productNames].sort((a, b) => ascending ? a.localeCompare(b) : b.localeCompare(a)
+  )
   }
 
 }
