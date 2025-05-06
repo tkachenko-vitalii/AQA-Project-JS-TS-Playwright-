@@ -1,13 +1,18 @@
 import {Locator, Page } from "@playwright/test";
 import { Header } from "../pageFragments/header";
+import { ProductsFiltersFragment } from '../pageFragments/productsFilters'
 
 export class HomePage {
-    page: Page;
+    readonly page: Page;
     readonly productTitles: Locator;
+    readonly filters: ProductsFiltersFragment
+    readonly header: Header
 
 constructor (page:Page,) {
     this.page = page;
     this.productTitles = page.locator(".product-title");
+    this.filters = new ProductsFiltersFragment(page)
+    this.header = new Header(page)
 }
 
 async open():Promise<void> {

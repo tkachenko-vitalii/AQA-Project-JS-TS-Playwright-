@@ -3,14 +3,14 @@ import { LoginPage } from '../pages/login.page';
 import dotenv from 'dotenv';
 import { ProductPage } from '../pages/product.page';
 import { HomePage } from '../pages/home.page';
-import { Header } from '../pageFragments/header.ts';
+//import { Header } from '../pageFragments/header.ts';
 dotenv.config();
 
 
 test('Authorization', async ({ page }) => {
 
   const loginPage = new LoginPage(page);
-  const header = new Header(page);
+  const homePage = new HomePage(page);
 
   await page.goto('/auth/login')
 
@@ -19,7 +19,7 @@ await loginPage.login(process.env.USER_EMAIL!,process.env.USER_PASSWORD!)
 await expect(page).toHaveURL('/account')
 await expect(await page.getByTestId('page-title')).toContainText('My account')
 
-await header.checkAccName(process.env.USER_NAME!)
+await homePage.header.checkAccName(process.env.USER_NAME!)
 });
 
 
@@ -41,7 +41,7 @@ test('AddToCart', async ({ page }) => {
 
   const homePage = new HomePage(page) 
   const productPage = new ProductPage(page)
-  const header = new Header(page);
+
 
   await homePage.open();
 
@@ -53,9 +53,9 @@ test('AddToCart', async ({ page }) => {
 
   await productPage.checkCartIcon('Product added to shopping cart.')
 
-  await header.checkQty('1');
+  await homePage.header.checkQty('1');
   
-  await header.openCart();
+  await homePage.header.openCart();
 
   await expect(page).toHaveURL('/checkout')
 
