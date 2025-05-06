@@ -29,9 +29,9 @@ async checkProductInfo(title: string, price: number, ): Promise<void> {
 }
 
 async checkCartIcon(alert:string):Promise<void> {
-    await expect (this.page.getByRole('alert')).toBeVisible();
-    await expect (this.page.getByRole('alert')).toHaveText(alert);
-    await expect (this.page.getByRole('alert')).toBeHidden({ timeout: 8000 })
+    await expect (this.page.locator('[aria-live="polite"]')).toBeVisible();
+    await expect (this.page.locator('[aria-live="polite"]')).toHaveText(alert);
+    await expect (this.page.locator('[aria-live="polite"]')).toBeHidden({ timeout: 8000 })
 }
   }
     

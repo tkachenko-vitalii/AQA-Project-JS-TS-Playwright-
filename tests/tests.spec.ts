@@ -59,7 +59,7 @@ test('AddToCart', async ({ page }) => {
 
   await expect(page).toHaveURL('/checkout')
 
-  await expect(await page.getByTestId("product-quantity")).toHaveValue('1')
+  await expect(await page.getByTestId("product-quantity")).toHaveText('1')
   await expect(await page.getByTestId("product-title")).toHaveText('Slip Joint Pliers')
   await expect(await page.getByTestId("proceed-1")).toBeVisible()
 })
