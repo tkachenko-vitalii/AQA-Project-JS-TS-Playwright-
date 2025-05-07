@@ -7,6 +7,10 @@ export class ProductPage{
     unitPrice: Locator;
     addToCartBtn: Locator;
     addToFavouritesBtn: Locator;
+    alert: Locator;
+    productQuantity: Locator;
+    productTitle: Locator;
+    proceedToCheckoutBtn: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -14,6 +18,10 @@ export class ProductPage{
         this.unitPrice = this.page.getByTestId('unit-price');
         this.addToCartBtn = this.page.getByTestId('add-to-cart')
         this.addToFavouritesBtn = this.page.getByTestId('add-to-favorites')
+        this.alert = this.page.locator("[id='toast-container']")
+        this.productQuantity = this.page.getByTestId("product-quantity")
+        this.productTitle = this.page.getByTestId("product-title")
+        this.proceedToCheckoutBtn = this.page.getByTestId("proceed-1")
     }
 
 async openProduct(title: string): Promise<void> {
@@ -28,10 +36,22 @@ async checkProductInfo(title: string, price: number, ): Promise<void> {
     await expect(this.addToFavouritesBtn).toBeVisible();
 }
 
-async checkCartIcon(alert:string):Promise<void> {
-    await expect (this.page.locator('[aria-live="polite"]')).toBeVisible();
-    await expect (this.page.locator('[aria-live="polite"]')).toHaveText(alert);
-    await expect (this.page.locator('[aria-live="polite"]')).toBeHidden({ timeout: 8000 })
+async checkToastNotification(alert:string):Promise<void> {
+    await expect (this.alert).toBeVisible();
+    await expect (this.alert).toHaveText(alert);
+    await expect (this.alert).toBeHidden({ timeout: 8000 })
+}
+
+async checkProductValue(value:number):Promise<void> {
+    await expect (this.productQuantity).toHaveValue(value.toString())
+}
+
+async checkProductName(string:string):Promise<void> {
+    await expect (this.productTitle).toHaveText(string)
+}
+
+async checkProceedBtn():Promise<void> {
+    await expect (this.proceedToCheckoutBtn).toBeVisible()
 }
   }
     

@@ -3,7 +3,6 @@ import { LoginPage } from '../pages/login.page';
 import dotenv from 'dotenv';
 import { ProductPage } from '../pages/product.page';
 import { HomePage } from '../pages/home.page';
-//import { Header } from '../pageFragments/header.ts';
 dotenv.config();
 
 
@@ -16,10 +15,12 @@ test('Authorization', async ({ page }) => {
 
 await loginPage.login(process.env.USER_EMAIL!,process.env.USER_PASSWORD!)
 
-await expect(page).toHaveURL('/account')
-await expect(await page.getByTestId('page-title')).toContainText('My account')
+await homePage.header.checkUrl('/account')
+
+await loginPage.checkTitle('My account')
 
 await homePage.header.checkAccName(process.env.USER_NAME!)
+
 });
 
 
@@ -49,18 +50,20 @@ test('AddToCart', async ({ page }) => {
 
   await productPage.checkProductInfo('Slip Joint Pliers', 9.17)
 
-  await page.getByTestId("add-to-cart").click()
+  await productPage.addToCartBtn.click()
 
-  await productPage.checkCartIcon('Product added to shopping cart.')
+  await productPage.checkToastNotification('Product added to shopping cart.')
 
   await homePage.header.checkQty('1');
   
   await homePage.header.openCart();
 
-  await expect(page).toHaveURL('/checkout')
+  await homePage.header.checkUrl('/checkout')
 
-  await expect(await page.getByTestId("product-quantity")).toHaveText('1')
-  await expect(await page.getByTestId("product-title")).toHaveText('Slip Joint Pliers')
-  await expect(await page.getByTestId("proceed-1")).toBeVisible()
+  await productPage.checkProductValue(1)
+
+  await productPage.checkProductName('Slip Joint Pliers')
+  
+  await productPage.checkProceedBtn()
 })
 

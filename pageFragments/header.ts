@@ -15,14 +15,18 @@ export class Header {
     
 
     async checkQty(title:string): Promise<void> {
-        await expect(this.page.getByTestId("cart-quantity")).toHaveText(title)
+        await expect(this.cartQty).toHaveText(title)
     }
 
     async openCart(): Promise<void> {
-        await this.page.getByTestId("nav-cart").click()
+        await this.cartIcon.click()
     }
 
     async checkAccName(title:string): Promise<void> {
-        await expect(this.page.getByTestId("nav-menu")).toContainText(title)
-    }
+        await expect(this.accName).toContainText(title)
+}
+
+    async checkUrl(title:string):Promise<void> {
+        await expect(this.page).toHaveURL(title)
+  }
 }

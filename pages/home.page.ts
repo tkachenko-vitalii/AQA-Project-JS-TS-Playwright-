@@ -1,4 +1,4 @@
-import {Locator, Page } from "@playwright/test";
+import {expect, Locator, Page } from "@playwright/test";
 import { Header } from "../pageFragments/header";
 import { ProductsFiltersFragment } from '../pageFragments/productsFilters'
 
@@ -26,9 +26,9 @@ async getProductNames(): Promise<string[]> {
     for (let i = 0; i < count; i++) {
       names.push(await this.productTitles.nth(i).innerText());
     }
-
-    return names;
+      return names;
   }
+
   async getProductPrices(): Promise<number[]> {
     const productCards = this.page.getByTestId('product-card');
     const count = await productCards.count();
@@ -42,9 +42,9 @@ async getProductNames(): Promise<string[]> {
       const price = parseFloat(priceText.replace("$", ""));
       prices.push(price);
     }
-
-    return prices;
+      return prices;
   }
+
   async sortPrices(prices: number[], ascending: boolean): Promise<number[]> {
     return [...prices].sort((a, b) => ascending ? a - b : b - a);
   }
@@ -52,6 +52,10 @@ async getProductNames(): Promise<string[]> {
   async sortNames(productNames: string[], ascending: boolean): Promise<string[]> {
     return [...productNames].sort((a, b) => ascending ? a.localeCompare(b) : b.localeCompare(a)
   )
+  }
+
+  async checkUrl(title:string):Promise<void> {
+    await expect(this.page).toHaveURL(title)
   }
 
 }
