@@ -1,5 +1,4 @@
 import { Locator, Page } from "@playwright/test";
-import { Header } from "./header";
 
 export class ProductsFiltersFragment {
   sortDropdown: Locator;
@@ -9,11 +8,11 @@ export class ProductsFiltersFragment {
   }
 
   
-  async selectSortOption(optionText: string) {
+  async selectSortOption(optionText: string):Promise<void> {
     await this.sortDropdown.selectOption({ label: optionText });
   }
 
-  async filterByCategory(label: string) {
+  async filterByCategory(label: string):Promise<void> {
     const checkbox = this.page.locator('label').filter({ hasText: label });
     await checkbox.click();
   }

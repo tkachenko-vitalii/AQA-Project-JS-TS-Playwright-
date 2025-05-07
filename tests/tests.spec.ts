@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test} from '@playwright/test';
 import { LoginPage } from '../pages/login.page';
 import dotenv from 'dotenv';
 import { ProductPage } from '../pages/product.page';
@@ -49,6 +49,10 @@ test('AddToCart', async ({ page }) => {
   await productPage.openProduct('Slip Joint Pliers')
 
   await productPage.checkProductInfo('Slip Joint Pliers', 9.17)
+
+  await expect (productPage.addToCartBtn).toBeVisible();
+
+  await expect (productPage.addToFavouritesBtn).toBeVisible();
 
   await productPage.addToCartBtn.click()
 

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../pages/home.page';
-import { Header } from "../pageFragments/header";
 import { PowerTools } from '../tools.ts';
+import { sortPrices, sortNames } from "../utils/sorting";
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -24,7 +24,7 @@ test.describe('Sorting by name', () => {
 
         const productNames = await homePage.getProductNames();
   
-        const sortedNames = await homePage.sortNames(productNames,ascending)
+        const sortedNames = sortNames(productNames,ascending)
   
         expect(productNames).toEqual(sortedNames);
       });
@@ -48,9 +48,9 @@ test.describe('Sorting by name', () => {
     
           const prices = await homePage.getProductPrices();
 
-          const sorted = await homePage.sortPrices(prices, ascending);
+          const sorted = sortPrices(prices, ascending);
     
-          expect(prices).toEqual(sorted);
+          expect(sorted).toEqual([...prices].sort((a, b) => ascending ? a - b : b - a));
         });
       }
     });

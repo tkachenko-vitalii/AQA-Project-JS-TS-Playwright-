@@ -1,16 +1,15 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { Header } from "../pageFragments/header";
 
 export class ProductPage{
-    page: Page;
-    productName: Locator;
-    unitPrice: Locator;
-    addToCartBtn: Locator;
-    addToFavouritesBtn: Locator;
-    alert: Locator;
-    productQuantity: Locator;
-    productTitle: Locator;
-    proceedToCheckoutBtn: Locator;
+   readonly page: Page;
+   readonly productName: Locator;
+   readonly unitPrice: Locator;
+   readonly addToCartBtn: Locator;
+   readonly addToFavouritesBtn: Locator;
+   readonly alert: Locator;
+   readonly productQuantity: Locator;
+   readonly productTitle: Locator;
+   readonly proceedToCheckoutBtn: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -24,16 +23,14 @@ export class ProductPage{
         this.proceedToCheckoutBtn = this.page.getByTestId("proceed-1")
     }
 
-async openProduct(title: string): Promise<void> {
+    async openProduct(title: string): Promise<void> {
         await this.page.getByAltText(title).click();
-        await this.page.url().includes('/product')
-}
+        await this.page.waitForURL(/\/product/);
+      }
 
 async checkProductInfo(title: string, price: number, ): Promise<void> {
     await expect(this.productName).toHaveText(title);
     await expect(this.unitPrice).toHaveText(price.toFixed(2));
-    await expect(this.addToCartBtn).toBeVisible();
-    await expect(this.addToFavouritesBtn).toBeVisible();
 }
 
 async checkToastNotification(alert:string):Promise<void> {
@@ -46,8 +43,8 @@ async checkProductValue(value:number):Promise<void> {
     await expect (this.productQuantity).toHaveValue(value.toString())
 }
 
-async checkProductName(string:string):Promise<void> {
-    await expect (this.productTitle).toHaveText(string)
+async checkProductName(title: string):Promise<void> {
+    await expect (this.productTitle).toHaveText(title)
 }
 
 async checkProceedBtn():Promise<void> {

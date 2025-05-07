@@ -1,6 +1,7 @@
 import {expect, Locator, Page } from "@playwright/test";
 import { Header } from "../pageFragments/header";
 import { ProductsFiltersFragment } from '../pageFragments/productsFilters'
+import { sortPrices, sortNames } from "../utils/sorting";
 
 export class HomePage {
     readonly page: Page;
@@ -20,36 +21,18 @@ async open():Promise<void> {
 }
 
 async getProductNames(): Promise<string[]> {
-    const count = await this.productTitles.count();
-    const names: string[] = [];
+  return await this.productTitles.allTextContents();
+}
 
-    for (let i = 0; i < count; i++) {
-      names.push(await this.productTitles.nth(i).innerText());
-    }
-      return names;
-  }
-
-  async getProductPrices(): Promise<number[]> {
-    const productCards = this.page.getByTestId('product-card');
-    const count = await productCards.count();
-
-    const prices: number[] = [];
-    for (let i = 0; i < count; i++) {
-      const priceText = await productCards
-        .nth(i)
-        .getByTestId('product-price')
-        .innerText();
-      const price = parseFloat(priceText.replace("$", ""));
-      prices.push(price);
-    }
-      return prices;
-  }
-
-  async sortPrices(prices: number[], ascending: boolean): Promise<number[]> {
+async getProductPrices(): Promise<number[]> {
+  const priceTexts = await this.page.getByTestId('product-price').allTextContents();
+  return priceTexts.map(text => parseFloat(text.replace('$', '')));
+}
+  sortPrices(prices: number[], ascending: boolean): number[] {
     return [...prices].sort((a, b) => ascending ? a - b : b - a);
   }
 
-  async sortNames(productNames: string[], ascending: boolean): Promise<string[]> {
+  sortNames(productNames: string[], ascending: boolean): string[] {
     return [...productNames].sort((a, b) => ascending ? a.localeCompare(b) : b.localeCompare(a)
   )
   }
