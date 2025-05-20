@@ -26,6 +26,8 @@ test('ProductInfo', async ({ homePage, productPage }) => {
   const productTitle = 'Combination Pliers';
   const productPrice =  14.15;
  
+  await homePage.open();
+  
   await productPage.openProduct(productTitle);
     
   await productPage.checkProductInfo(productTitle, productPrice);
