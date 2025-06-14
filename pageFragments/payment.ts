@@ -21,7 +21,7 @@ export class PaymentsFragment {
     await this.sortDropdown.selectOption({ label: optionText });
   }
 
-  async checkPaymentFormToBeFulfilled(): Promise<void> {
+  async fillPaymentForm(): Promise<void> {
     const now = new Date();
     const threeMonthsLater = new Date(now);
     threeMonthsLater.setMonth(now.getMonth() + 3);

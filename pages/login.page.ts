@@ -15,6 +15,10 @@ export class LoginPage{
         this.submitButton = this.page.getByTestId('login-submit')
         this.pageTitle = this.page.getByTestId('page-title')
     }
+
+    async open():Promise<void> {
+      await this.page.goto('/auth/login');
+  }
     
     async login(email: string, password: string): Promise<void> {
       await this.emailLocator.fill(email);

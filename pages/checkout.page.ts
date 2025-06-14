@@ -58,15 +58,7 @@ async checkProductName(title: string):Promise<void> {
     await expect (this.productTitle).toHaveText(title)
 }
 
-async checkProceedBtn():Promise<void> {
-    await expect (this.proceedToCheckoutBtn).toBeVisible()
-}
-
-async checkProceedBtn2():Promise<void> {
-    await expect (this.proceedToCheckoutBtn2).toBeVisible()
-}
-
-   async checkIfLoggedIn(): Promise<void> {
+async checkIfLoggedIn(): Promise<void> {
 
     async function fillIfEmpty(field: Locator, value: string): Promise<void> {
         const currentValue = await field.inputValue();

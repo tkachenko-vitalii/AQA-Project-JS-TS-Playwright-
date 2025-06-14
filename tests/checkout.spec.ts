@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-test('Buying', async ({ homePage, productPage, checkOutPage }) => {
+test('Add to cart and complete purchase', async ({ homePage, productPage, checkOutPage }) => {
     
     const productTitle = 'Combination Pliers';
     const productPrice =  14.15;
@@ -22,7 +22,7 @@ test('Buying', async ({ homePage, productPage, checkOutPage }) => {
     await checkOutPage.checkAddressFormToBeFulfilled();
     await checkOutPage.proceedToCheckoutBtn3.click();
     await checkOutPage.payment.selectSortOption('Credit Card');
-    await checkOutPage.payment.checkPaymentFormToBeFulfilled();
+    await checkOutPage.payment.fillPaymentForm();
     await checkOutPage.confirmPaymentBtn.click();
     await checkOutPage.checkAlertNotification('Payment was successful')
     

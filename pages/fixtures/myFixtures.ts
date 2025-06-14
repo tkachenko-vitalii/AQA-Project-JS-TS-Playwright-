@@ -19,7 +19,7 @@ export const test = base.extend<MyFixtures>({
 
         const loginPage = new LoginPage(page);
   
-        await page.goto('/auth/login')
+        await loginPage.open()
       
         await loginPage.login(process.env.USER_EMAIL!,process.env.USER_PASSWORD!)
 

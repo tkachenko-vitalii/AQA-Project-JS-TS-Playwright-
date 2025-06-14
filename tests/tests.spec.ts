@@ -62,6 +62,6 @@ test('AddToCart', async ({ homePage, productPage, checkOutPage }) => {
 
   await checkOutPage.checkProductName(productTitle)
   
-  await checkOutPage.checkProceedBtn()
+  await expect (checkOutPage.proceedToCheckoutBtn).toBeVisible()
 })
 

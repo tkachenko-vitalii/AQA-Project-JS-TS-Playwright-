@@ -16,7 +16,7 @@ export class ProductPage{
         this.unitPrice = this.page.getByTestId('unit-price');
         this.addToCartBtn = this.page.getByTestId('add-to-cart')
         this.addToFavouritesBtn = this.page.getByTestId('add-to-favorites')
-        this.alert = this.page.locator("[id='toast-container']")   
+        this.alert = this.page.locator("#toast-container")   
     }
 
     async openProduct(title: string): Promise<void> {
